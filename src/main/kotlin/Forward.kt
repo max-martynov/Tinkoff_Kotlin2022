@@ -19,4 +19,9 @@ class Forward(
         goalsScored++
     }
 
+    fun prettyPrintTransferCost(additionalInfo: String) {
+        super.prettyPrintTransferCost()
+        println("Additional info: $additionalInfo.")
+    }
+
 }

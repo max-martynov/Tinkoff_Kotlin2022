@@ -19,6 +19,12 @@ fun main() {
         footballPlayer.prettyPrintTransferCost()
     }
 
+    print("\n-----------------\n")
+
+    forward1.prettyPrintTransferCost("he is not gay")
+
+    print("\n-----------------\n")
+
     val footballTeam = FootballTeam(footballPlayers)
     footballTeam.prettyPrintTotalCost()
 
