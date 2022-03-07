@@ -3,7 +3,8 @@ class GoalKeeper(
     age: Int,
     country: String) : FootballPlayer(name, age, country) {
 
-    private var saves: Int = 0
+    var saves: Int = 0
+        private set
 
     override fun calculateTransferCost(): Int {
         if (country == "Spain")

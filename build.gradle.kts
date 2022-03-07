@@ -33,9 +33,7 @@ tasks.withType<Test>() {
     useJUnitPlatform()
     testLogging {
         events(FAILED, PASSED, SKIPPED)
-        exceptionFormat = FULL
         showExceptions = true
         showCauses = true
-        showStackTraces = true
     }
 }
