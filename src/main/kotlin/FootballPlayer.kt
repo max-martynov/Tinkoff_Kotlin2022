@@ -1,7 +1,7 @@
 abstract class FootballPlayer(
-    val name: String,
-    var age: Int,
-    val country: String
+    private val name: String,
+    val age: Int,
+    protected val country: String
 ) {
 
     open fun calculateTransferCost(): Int {

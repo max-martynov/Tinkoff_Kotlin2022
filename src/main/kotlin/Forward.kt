@@ -3,7 +3,8 @@ class Forward(
     age: Int,
     country: String) : FootballPlayer(name, age, country) {
 
-    private var goalsScored: Int = 0
+    var goalsScored: Int = 0
+        private set
 
     override fun calculateTransferCost(): Int {
         if (country == "Portugal")
