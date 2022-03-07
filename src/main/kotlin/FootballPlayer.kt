@@ -1,5 +1,5 @@
 abstract class FootballPlayer(
-    val name: String,
+    private val name: String,
     var age: Int,
     val country: String
 ) {
