@@ -15,7 +15,6 @@ class MuQueueTest {
     private val stringValues = listOf("a", "def", "baf")
     private val integerValues = List(100) { (0..10000).random() }
 
-
     @Nested
     inner class ElementTest {
         @Test
@@ -144,7 +143,5 @@ class MuQueueTest {
             assertNull(queue.poll())
         }
     }
-
-
 
 }

@@ -1,10 +1,10 @@
-import collections.MyQueue
 import collections.MyStack
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
+
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MyStackTest {
@@ -84,6 +84,4 @@ class MyStackTest {
             assertEquals(3, stack.pop())
         }
     }
-
-
 }
