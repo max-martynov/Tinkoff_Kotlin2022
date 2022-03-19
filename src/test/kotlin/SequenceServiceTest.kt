@@ -1,20 +1,21 @@
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import util.TestData
+import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 
-class IterableServiceTest {
+class SequenceServiceTest {
 
-    val iterableService = IterableService()
+    val sequenceService = SequenceService()
 
-    val basicVehiclesWithDescription = TestData.basicVehiclesWithDescription
+    private val basicVehiclesWithDescription = TestData.basicVehiclesWithDescription.asSequence()
 
-    val basicVehicles: List<Vehicle>
-        get() = basicVehiclesWithDescription.map { it.vehicle }
+    private val basicVehicles: List<Vehicle>
+        get() = basicVehiclesWithDescription.map { it.vehicle }.toList()
 
-    val basicDescriptions: List<String>
-        get() = basicVehiclesWithDescription.map { it.description }
+    private val basicDescriptions: List<String>
+        get() = basicVehiclesWithDescription.map { it.description }.toList()
 
 
     @Nested
@@ -22,7 +23,7 @@ class IterableServiceTest {
 
         @Test
         fun `empty list remains unchanged`() {
-            assertEquals(listOf(), iterableService.getDescriptionsAndSortByPrice(listOf()))
+            assertContentEquals(emptySequence(), sequenceService.getDescriptionsAndSortByPrice(emptySequence()))
         }
 
         @Test
@@ -33,7 +34,7 @@ class IterableServiceTest {
                 basicDescriptions[2],
                 basicDescriptions[0]
             )
-            assertEquals(sortedByPrice, iterableService.getDescriptionsAndSortByPrice(basicVehicles))
+            assertContentEquals(sortedByPrice.asSequence(), sequenceService.getDescriptionsAndSortByPrice(basicVehicles.asSequence()))
         }
 
     }
@@ -43,7 +44,7 @@ class IterableServiceTest {
 
         @Test
         fun `empty list remains unchanged`() {
-            assertEquals(mapOf(), iterableService.groupByBodyType(listOf()))
+            assertEquals(mapOf(), sequenceService.groupByBodyType(emptySequence()))
         }
 
         @Test
@@ -54,17 +55,17 @@ class IterableServiceTest {
                 BodyType.Minivan to listOf(basicVehicles[2]),
                 BodyType.Crossover to listOf(basicVehicles[3])
             )
-            assertEquals(expected, iterableService.groupByBodyType(basicVehicles))
+            assertEquals(expected, sequenceService.groupByBodyType(basicVehicles.asSequence()))
         }
 
         @Test
         fun `a few vehicles of same body type`() {
-            val sedans = listOf(
+            val sedans = sequenceOf(
                 Vehicle("a", BodyType.Sedan, (0..100).random()),
                 Vehicle("b", BodyType.Sedan, (0..100).random()),
                 Vehicle("c", BodyType.Sedan, (0..100).random())
             )
-            assertEquals(mapOf(BodyType.Sedan to sedans), iterableService.groupByBodyType(sedans))
+            assertEquals(mapOf(BodyType.Sedan to sedans.toList()), sequenceService.groupByBodyType(sedans))
         }
 
     }
@@ -74,36 +75,36 @@ class IterableServiceTest {
 
         @Test
         fun `empty list remains unchanged`() {
-            assertEquals(listOf(), iterableService.filterAndTakeThree(listOf()) { true })
+            assertContentEquals(emptySequence(), sequenceService.filterAndTakeThree(emptySequence()) { true })
         }
 
         @Test
         fun `list of size less than 3 with always true predicate`() {
-            assertEquals(listOf(basicVehiclesWithDescription[0].description, basicVehiclesWithDescription[1].description),
-                iterableService.filterAndTakeThree(
-                    listOf(basicVehiclesWithDescription[0].vehicle, basicVehiclesWithDescription[1].vehicle)
+            assertContentEquals(basicDescriptions.take(2).asSequence(),
+                sequenceService.filterAndTakeThree(
+                    basicVehicles.take(2).asSequence()
                 ) { true }
             )
         }
 
         @Test
         fun `list of size greater than 3 with always true predicate`() {
-            assertEquals(basicDescriptions.take(3), iterableService.filterAndTakeThree(basicVehicles) { true })
+            assertContentEquals(basicDescriptions.take(3).asSequence(), sequenceService.filterAndTakeThree(basicVehicles.asSequence()) { true })
         }
 
         @Test
         fun `always false predicate returns empty list`() {
-            assertEquals(listOf(), iterableService.filterAndTakeThree(basicVehicles) { false })
+            assertContentEquals(emptySequence(), sequenceService.filterAndTakeThree(basicVehicles.asSequence()) { false })
         }
 
         @Test
         fun `some custom predicate`() {
-            val expected = listOf(
+            val expected = sequenceOf(
                 basicDescriptions[0],
                 basicDescriptions[2],
                 basicDescriptions[3]
             )
-            assertEquals(expected, iterableService.filterAndTakeThree(basicVehicles) { it.priceInRubles > 30 })
+            assertContentEquals(expected, sequenceService.filterAndTakeThree(basicVehicles.asSequence()) { it.priceInRubles > 30 })
         }
     }
 
