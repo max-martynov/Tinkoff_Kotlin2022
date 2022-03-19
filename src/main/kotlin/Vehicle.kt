@@ -1,19 +1,14 @@
+import util.Constants
+
+
 data class Vehicle(
-    val brand: String,
     val model: String,
     val bodyType: BodyType,
     val priceInRubles: Int,
-    val gasMileage: Int
 ) {
 
-    fun getPriceInDollars(exchangeRate: Int): Int = priceInRubles * exchangeRate
+    fun getPriceInDollars(): Int = priceInRubles * Constants.EXCHANGE_RATE
 
-    fun getDescription(exchangeRate: Int): String =
-        """
-            Vehicle information for $brand $model
-            - Body type: $bodyType
-            - Price in dollars: ${getPriceInDollars(exchangeRate)}
-            - Gas mileage: $gasMileage
-        """.trimIndent()
+    fun getDescription(): String = "$bodyType $model costs ${getPriceInDollars()}$"
 
 }
