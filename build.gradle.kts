@@ -4,7 +4,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 
 
 plugins {
+    id("org.springframework.boot") version "2.6.4"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.10"
+    kotlin("plugin.spring") version "1.6.10"
     application
 }
 
@@ -17,6 +20,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:1.12.3")
 }
