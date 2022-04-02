@@ -1,4 +1,4 @@
-package model
+package tinkoff.model
 
 data class User(
     val login: String,

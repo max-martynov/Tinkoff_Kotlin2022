@@ -1,4 +1,4 @@
-package model
+package tinkoff.model
 
 class InMemoryTeamRepository : TeamRepository {
 
