@@ -17,12 +17,12 @@ class CitizenController(
 ) {
 
     @PostMapping("/verify")
-    fun verifyCitizen(@RequestBody unverifiedCitizen: UnverifiedCitizen): Citizen? {
+    fun verifyCitizen(@RequestBody unverifiedCitizen: UnverifiedCitizen): Citizen {
         return fbi.verifyCitizen(unverifiedCitizen)
     }
 
     @GetMapping("/get/{id}")
-    fun getUser(@PathVariable id: Int): Citizen? {
+    fun getUser(@PathVariable id: Int): Citizen {
         return fbi.getCitizen(id)
     }
 

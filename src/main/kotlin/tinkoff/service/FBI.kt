@@ -12,18 +12,19 @@ class FBI(
     val crimeServiceClient: CrimeServiceClient
 ) {
 
-    fun verifyCitizen(unverifiedCitizen: UnverifiedCitizen): Citizen? {
+    fun verifyCitizen(unverifiedCitizen: UnverifiedCitizen): Citizen {
         val crimeHistory = crimeServiceClient.getCrimeHistory(unverifiedCitizen.personalIdNumber)
-        val citizen = crimeHistory?.let { unverifiedCitizen.toCitizen(it) } ?: return null
+        requireNotNull(crimeHistory) { "No crime history found for unverified citizen with id=${unverifiedCitizen.personalIdNumber}!" }
+        val citizen = unverifiedCitizen.toCitizen(crimeHistory)
         citizensRepository.addCitizen(citizen)
         return citizen
     }
 
-    fun getCitizen(id: Int): Citizen? =
-        citizensRepository.getCitizen(id)
+    fun getCitizen(id: Int): Citizen {
+        return requireNotNull(citizensRepository.getCitizen(id)) { "No citizen with id=$id!"  }
+    }
 
     fun getPage(pageNumber: Int, pageSize: Int): List<Citizen> =
         citizensRepository.getPageOfCitizens(pageNumber, pageSize)
-
 
 }
