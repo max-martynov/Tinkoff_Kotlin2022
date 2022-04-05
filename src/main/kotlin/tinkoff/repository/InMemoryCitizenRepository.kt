@@ -10,7 +10,7 @@ class InMemoryCitizenRepository : CitizensRepository {
     private val citizens = mutableMapOf<Int, Citizen>()
 
     override fun addCitizen(citizen: Citizen) {
-        citizens[citizen.id] = citizen
+        citizens[citizen.personalIdNumber] = citizen
     }
 
     override fun getCitizen(id: Int): Citizen? {
