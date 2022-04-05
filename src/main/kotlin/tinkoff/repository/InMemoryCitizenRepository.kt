@@ -16,4 +16,7 @@ class InMemoryCitizenRepository : CitizensRepository {
     override fun getCitizen(id: Int): Citizen? {
         return citizens[id]
     }
+
+    override fun getAll(): List<Citizen> =
+        citizens.values.toList()
 }

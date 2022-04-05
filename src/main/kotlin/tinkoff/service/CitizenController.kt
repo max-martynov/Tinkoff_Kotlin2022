@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import tinkoff.model.Citizen
-import tinkoff.model.CitizensRepository
 import tinkoff.model.UnverifiedCitizen
 
 @RestController
@@ -25,6 +24,11 @@ class CitizenController(
     @GetMapping("/get/{id}")
     fun getUser(@PathVariable id: Int): Citizen? {
         return fbi.getCitizen(id)
+    }
+
+    @GetMapping("/page")
+    fun getPage(@RequestParam page: Int, @RequestParam size: Int): List<Citizen> {
+        return fbi.getPage(page, size)
     }
 
 }

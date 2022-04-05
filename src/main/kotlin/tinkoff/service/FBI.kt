@@ -19,6 +19,11 @@ class FBI(
         return citizen
     }
 
-    fun getCitizen(id: Int): Citizen? = citizensRepository.getCitizen(id)
+    fun getCitizen(id: Int): Citizen? =
+        citizensRepository.getCitizen(id)
+
+    fun getPage(pageNumber: Int, pageSize: Int): List<Citizen> =
+        citizensRepository.getPageOfCitizens(pageNumber, pageSize)
+
 
 }
