@@ -3,7 +3,9 @@ package tinkoff
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
+import io.mockk.slot
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -23,46 +25,53 @@ import tinkoff.service.FBIClient
 class CitizenControllerTest(@Autowired private val mockMvc: MockMvc, @Autowired private val mapper: ObjectMapper) {
 
     @MockkBean
-    lateinit var workingFBIClient: FBIClient
+    lateinit var fbiClient: FBIClient
 
-    @MockkBean
-    lateinit var brokenFBIClient: FBIClient
+    val fbiClientResponse = "ok"
 
-    val workingFBIClientResponse = "ok"
-
-    @BeforeAll
+    @BeforeEach
     fun setUp() {
-        every { workingFBIClient.getCrimeHistory(any()) } returns workingFBIClientResponse
+        every { fbiClient.getCrimeHistory(any()) } returns fbiClientResponse
     }
 
     @Nested
     inner class PostTest {
 
         @Test
-        fun `post citizen with workingFBIClient`() {
+        fun `post normal citizen`() {
             val personalId = 123
-            val citizen = Citizen(personalId, workingFBIClientResponse)
+            val citizen = Citizen(personalId, fbiClientResponse)
             mockMvc.perform(
                 post("/citizen/verify")
-                    .param("personalId", "123")
+                    .param("personalId", "$personalId")
             )
                 .andExpect(status().isOk)
                 .andExpect(content().json(mapper.writeValueAsString(citizen)))
         }
 
         @Test
-        fun `post citizen with `
+        fun `post citizen with bad id`() {
+            val personalId = -1
+            mockMvc.perform(
+                post("/citizen/verify")
+                    .param("personalId", "$personalId")
+            )
+                .andExpect(status().is4xxClientError)
+        }
 
-//        private fun <Request, Response> doTest(input: Request, expectation: Response) {
-//            mockMvc.post("/mockmvc/validate") {
-//                contentType = MediaType.APPLICATION_JSON
-//                content = mapper.writeValueAsString(input)
-//                accept = MediaType.APPLICATION_JSON
-//            }.andExpect {
-//                content { contentType(MediaType.APPLICATION_JSON) }
-//                content { json(mapper.writeValueAsString(expectation)) }
-//            }
-//        }
+        @Test
+        fun `post citizen when FBI client doesn't response`() {
+            setUpBrokenFBIClient()
+            mockMvc.perform(
+                post("/citizen/verify")
+                    .param("personalId", "123")
+            )
+                .andExpect(status().is5xxServerError)
+        }
+
+        private fun setUpBrokenFBIClient() {
+            every { fbiClient.getCrimeHistory(any()) } throws Exception()
+        }
     }
 
 
