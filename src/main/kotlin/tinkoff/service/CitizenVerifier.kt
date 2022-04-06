@@ -27,6 +27,7 @@ class CitizenVerifier(
 
     fun getPage(pageNumber: Int, pageSize: Int): ResponseEntity<List<Citizen>> {
         require(pageSize > 0) { "Page size must be positive!" }
+        require(pageNumber > 0) { "Page number must be positive!" }
         return ResponseEntity.ok(citizensRepository.getPageOfCitizens(pageNumber, pageSize))
     }
 
