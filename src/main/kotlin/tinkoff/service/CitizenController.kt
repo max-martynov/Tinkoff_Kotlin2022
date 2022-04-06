@@ -9,27 +9,26 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import tinkoff.model.Citizen
-import tinkoff.model.UnverifiedCitizen
 
 @RestController
 @RequestMapping("/citizen")
 class CitizenController(
-    private val fbi: FBI
+    private val citizenVerifier: CitizenVerifier
 ) {
 
     @PostMapping("/verify")
-    fun verifyCitizen(@RequestBody unverifiedCitizen: UnverifiedCitizen): ResponseEntity<Citizen> {
-        return fbi.verifyCitizen(unverifiedCitizen)
+    fun verifyCitizen(@RequestParam personalId: Int): ResponseEntity<Citizen> {
+        return citizenVerifier.verifyCitizen(personalId)
     }
 
     @GetMapping("/get/{id}")
-    fun getUser(@PathVariable id: Int): Citizen {
-        return fbi.getCitizen(id)
+    fun getUser(@PathVariable id: Int): ResponseEntity<Citizen> {
+        return citizenVerifier.getCitizen(id)
     }
 
     @GetMapping("/page")
-    fun getPage(@RequestParam page: Int, @RequestParam size: Int): List<Citizen> {
-        return fbi.getPage(page, size)
+    fun getPage(@RequestParam page: Int, @RequestParam size: Int): ResponseEntity<List<Citizen>> {
+        return citizenVerifier.getPage(page, size)
     }
 
 }

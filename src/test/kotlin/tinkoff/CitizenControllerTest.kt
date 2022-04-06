@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import tinkoff.model.Citizen
 import tinkoff.model.UnverifiedCitizen
-import tinkoff.service.CrimeServiceClient
+import tinkoff.service.FBIClient
 
 
 @SpringBootTest
@@ -22,7 +22,7 @@ class CitizenControllerTest(private val mockMvc: MockMvc, private val objectMapp
 
 
     @MockkBean
-    private val reliableCrimeServiceClient: CrimeServiceClient = mockk()
+    private val reliableCrimeServiceClient: FBIClient = mockk()
 
     init {
         every { reliableCrimeServiceClient.getCrimeHistory(any()) } returns "ok"

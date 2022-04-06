@@ -6,23 +6,24 @@ import org.springframework.web.client.RestClientException
 import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.getForObject
 import org.springframework.web.util.UriComponentsBuilder
+import tinkoff.util.FBIException
 
 @Service
-class CrimeServiceClient(
+class FBIClient(
     private val restTemplate: RestTemplate,
-    @Value("\${crime.service.address}") private val crimeServiceAddress: String
+    @Value("\${fbi.address}") private val fbiAddress: String
 ) {
 
-    fun getCrimeHistory(personalIdNumber: Int): String? = try {
+    fun getCrimeHistory(personalId: Int): String = try {
         restTemplate.getForObject(
             UriComponentsBuilder
-                .fromHttpUrl(crimeServiceAddress)
-                .path("/$personalIdNumber")
+                .fromHttpUrl(fbiAddress)
+                .path("/$personalId")
                 .build()
                 .toUriString()
         )
     } catch (e: RestClientException) {
-        null
+        throw FBIException("FBI cannot find citizen with id=$personalId!")
     }
 
 }

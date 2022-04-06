@@ -1,7 +1,6 @@
 package tinkoff.model
 
 data class Citizen(
-    val personalIdNumber: Int,
-    val name: String,
+    val personalId: Int,
     val crimeHistory: String
 )
