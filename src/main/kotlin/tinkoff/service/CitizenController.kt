@@ -1,5 +1,6 @@
 package tinkoff.service
 
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,7 +18,7 @@ class CitizenController(
 ) {
 
     @PostMapping("/verify")
-    fun verifyCitizen(@RequestBody unverifiedCitizen: UnverifiedCitizen): Citizen {
+    fun verifyCitizen(@RequestBody unverifiedCitizen: UnverifiedCitizen): ResponseEntity<Citizen> {
         return fbi.verifyCitizen(unverifiedCitizen)
     }
 
