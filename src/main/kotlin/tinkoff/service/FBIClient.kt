@@ -14,7 +14,7 @@ class FBIClient(
     @Value("\${fbi.address}") private val fbiAddress: String
 ) {
 
-    fun getCrimeHistory(personalId: Int): String? = try {
+    fun getCrimeHistory(personalId: Int): String =
         restTemplate.getForObject(
             UriComponentsBuilder
                 .fromHttpUrl(fbiAddress)
@@ -22,8 +22,4 @@ class FBIClient(
                 .build()
                 .toUriString()
         )
-    } catch (e: RestClientException) {
-        null
-    }
-
 }

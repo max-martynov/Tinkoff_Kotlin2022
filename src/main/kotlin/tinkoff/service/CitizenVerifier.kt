@@ -12,8 +12,8 @@ class CitizenVerifier(
 ) {
 
     fun verifyCitizen(personalId: Int): ResponseEntity<Citizen> {
+        require(personalId > 0) { "Personal ID must be positive!" }
         val crimeHistory = fbiClient.getCrimeHistory(personalId)
-            ?: throw IllegalArgumentException("FBI cannot find citizen with id=$personalId!")
         val citizen = Citizen(personalId, crimeHistory)
         citizensRepository.addCitizen(citizen)
         return ResponseEntity.ok(citizen)
