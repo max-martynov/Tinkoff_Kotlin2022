@@ -8,4 +8,6 @@ interface CitizenRepository {
 
     fun getPageOfCitizens(pageNumber: Int, pageSize: Int): List<Citizen>
 
+    fun clear()
+
 }

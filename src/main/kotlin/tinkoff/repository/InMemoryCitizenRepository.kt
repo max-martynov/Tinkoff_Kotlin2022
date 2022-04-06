@@ -18,7 +18,6 @@ class InMemoryCitizenRepository : CitizenRepository {
     }
 
     override fun getPageOfCitizens(pageNumber: Int, pageSize: Int): List<Citizen> {
-        //require(pageSize > 0) { "Page size must be positive!" }
         return citizens
             .values
             .toList()
@@ -26,6 +25,10 @@ class InMemoryCitizenRepository : CitizenRepository {
                 minOf((pageNumber - 1) * pageSize, citizens.size),
                 minOf(pageNumber * pageSize, citizens.size)
             )
+    }
+
+    override fun clear() {
+        citizens.clear()
     }
 
 }
