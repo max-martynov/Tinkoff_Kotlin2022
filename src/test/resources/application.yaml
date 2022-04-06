@@ -3,4 +3,4 @@ spring:
   profiles.active: test
 server.port: 9000
 
-crime.service.address: http://localhost:9001
+fbi.address: http://localhost:9001

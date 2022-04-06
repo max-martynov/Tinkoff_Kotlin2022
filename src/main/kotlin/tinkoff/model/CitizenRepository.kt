@@ -2,7 +2,7 @@ package tinkoff.model
 
 interface CitizenRepository {
 
-    fun addCitizen(citizen: Citizen): Boolean
+    fun addCitizen(citizen: Citizen)
 
     fun getCitizen(id: Int): Citizen?
 

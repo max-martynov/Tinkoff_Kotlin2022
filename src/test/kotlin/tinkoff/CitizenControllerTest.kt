@@ -3,52 +3,66 @@ package tinkoff
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.ninjasquad.springmockk.MockkBean
 import io.mockk.every
-import io.mockk.mockk
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import tinkoff.model.Citizen
-import tinkoff.model.UnverifiedCitizen
 import tinkoff.service.FBIClient
-
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CitizenControllerTest(private val mockMvc: MockMvc, private val objectMapper: ObjectMapper) {
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+class CitizenControllerTest(@Autowired private val mockMvc: MockMvc, @Autowired private val mapper: ObjectMapper) {
 
     @MockkBean
-    private val reliableCrimeServiceClient: FBIClient = mockk()
+    lateinit var workingFBIClient: FBIClient
 
-    init {
-        every { reliableCrimeServiceClient.getCrimeHistory(any()) } returns "ok"
+    @MockkBean
+    lateinit var brokenFBIClient: FBIClient
+
+    val workingFBIClientResponse = "ok"
+
+    @BeforeAll
+    fun setUp() {
+        every { workingFBIClient.getCrimeHistory(any()) } returns workingFBIClientResponse
     }
 
     @Nested
-    inner class VerifyEndpointTest {
+    inner class PostTest {
 
         @Test
-        fun `gg wp`() {
-            doTest(
-                UnverifiedCitizen(1, "max"),
-                Citizen(1, "max", "ok")
+        fun `post citizen with workingFBIClient`() {
+            val personalId = 123
+            val citizen = Citizen(personalId, workingFBIClientResponse)
+            mockMvc.perform(
+                post("/citizen/verify")
+                    .param("personalId", "123")
             )
+                .andExpect(status().isOk)
+                .andExpect(content().json(mapper.writeValueAsString(citizen)))
         }
 
-        private fun <Request, Response> doTest(input: Request, expectation: Response) {
-            mockMvc.post("/mockmvc/validate") {
-                contentType = MediaType.APPLICATION_JSON
-                content = objectMapper.writeValueAsString(input)
-                accept = MediaType.APPLICATION_JSON
-            }.andExpect {
-                content { contentType(MediaType.APPLICATION_JSON) }
-                content { json(objectMapper.writeValueAsString(expectation)) }
-            }
-        }
+        @Test
+        fun `post citizen with `
+
+//        private fun <Request, Response> doTest(input: Request, expectation: Response) {
+//            mockMvc.post("/mockmvc/validate") {
+//                contentType = MediaType.APPLICATION_JSON
+//                content = mapper.writeValueAsString(input)
+//                accept = MediaType.APPLICATION_JSON
+//            }.andExpect {
+//                content { contentType(MediaType.APPLICATION_JSON) }
+//                content { json(mapper.writeValueAsString(expectation)) }
+//            }
+//        }
     }
 
 

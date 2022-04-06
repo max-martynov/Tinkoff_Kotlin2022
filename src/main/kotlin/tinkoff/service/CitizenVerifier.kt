@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import tinkoff.model.Citizen
 import tinkoff.model.CitizenRepository
-import tinkoff.util.CitizenRepositoryException
 
 @Service
 class CitizenVerifier(
@@ -14,15 +13,15 @@ class CitizenVerifier(
 
     fun verifyCitizen(personalId: Int): ResponseEntity<Citizen> {
         val crimeHistory = fbiClient.getCrimeHistory(personalId)
+            ?: throw IllegalArgumentException("FBI cannot find citizen with id=$personalId!")
         val citizen = Citizen(personalId, crimeHistory)
-        if (!citizensRepository.addCitizen(citizen))
-            throw CitizenRepositoryException("Failed to save citizen with id=$personalId!")
+        citizensRepository.addCitizen(citizen)
         return ResponseEntity.ok(citizen)
     }
 
     fun getCitizen(id: Int): ResponseEntity<Citizen> {
         val citizen = citizensRepository.getCitizen(id)
-        requireNotNull(citizen) { "No citizen with id=$id!" }
+            ?: throw IllegalArgumentException("No citizen with id=$id!")
         return ResponseEntity.ok(citizen)
     }
 

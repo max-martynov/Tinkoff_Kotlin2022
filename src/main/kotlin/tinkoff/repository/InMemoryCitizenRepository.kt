@@ -9,9 +9,8 @@ class InMemoryCitizenRepository : CitizenRepository {
 
     private val citizens = mutableMapOf<Int, Citizen>()
 
-    override fun addCitizen(citizen: Citizen): Boolean {
+    override fun addCitizen(citizen: Citizen) {
         citizens[citizen.personalId] = citizen
-        return true
     }
 
     override fun getCitizen(id: Int): Citizen? {
