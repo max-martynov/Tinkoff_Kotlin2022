@@ -17,13 +17,13 @@ class InMemoryCitizenRepository : CitizenRepository {
         return citizens[id]
     }
 
-    override fun getRangeOfCitizens(from: Int, to: Int): List<Citizen> {
+    override fun getPageOfCitizens(pageNumber: Int, pageSize: Int): List<Citizen> {
         return citizens
             .values
             .toList()
             .subList(
-                minOf(from, citizens.size),
-                minOf(to, citizens.size)
+                minOf(pageNumber * pageSize, citizens.size),
+                minOf((pageNumber + 1) * pageSize, citizens.size)
             )
     }
 

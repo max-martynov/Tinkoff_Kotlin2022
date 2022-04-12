@@ -4,10 +4,18 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.*
 
 
 plugins {
-    id("org.springframework.boot") version "2.6.4"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
     kotlin("jvm") version "1.6.20"
     kotlin("plugin.spring") version "1.6.10"
+    kotlin("plugin.allopen") version "1.4.32"
+    kotlin("plugin.jpa") version "1.6.20"
+    id("org.springframework.boot") version "2.6.4"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+}
+
+allOpen {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.Embeddable")
+    annotation("javax.persistence.MappedSuperclass")
 }
 
 group = "me.maksimmartynov"

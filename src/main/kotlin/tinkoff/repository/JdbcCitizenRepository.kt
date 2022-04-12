@@ -10,7 +10,7 @@ import tinkoff.model.CitizenRepository
 import java.sql.ResultSet
 
 
-@Primary
+//@Primary
 @Service
 class JdbcCitizenRepository(private val jdbcTemplate: JdbcTemplate): CitizenRepository {
 
@@ -30,7 +30,9 @@ class JdbcCitizenRepository(private val jdbcTemplate: JdbcTemplate): CitizenRepo
        }
     }
 
-    override fun getRangeOfCitizens(from: Int, to: Int): List<Citizen> {
+    override fun getPageOfCitizens(pageNumber: Int, pageSize: Int): List<Citizen> {
+        val from = pageNumber * pageSize
+        val to = (pageNumber + 1) * pageSize
         return jdbcTemplate.query("select * from citizens limit ? offset ?", mapper, to, from)
     }
 
