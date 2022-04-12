@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Maksim Martynov
+      changes:
+        - createTable:
+            tableName: citizens
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: personal_id
+                  type: int
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: crime_history
+                  type: varchar(512)
+                  constraints:
+                    nullable: false

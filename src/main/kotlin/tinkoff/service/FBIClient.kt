@@ -14,12 +14,12 @@ class FBIClient(
     @Value("\${fbi.address}") private val fbiAddress: String
 ) {
 
-    fun getCrimeHistory(personalId: Int): String =
-        restTemplate.getForObject(
-            UriComponentsBuilder
-                .fromHttpUrl(fbiAddress)
-                .path("/$personalId")
-                .build()
-                .toUriString()
-        )
+    fun getCrimeHistory(personalId: Int): String = (0..1000).random().toString()
+//        restTemplate.getForObject(
+//            UriComponentsBuilder
+//                .fromHttpUrl(fbiAddress)
+//                .path("/$personalId")
+//                .build()
+//                .toUriString()
+//        )
 }

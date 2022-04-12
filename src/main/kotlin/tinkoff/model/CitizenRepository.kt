@@ -6,7 +6,11 @@ interface CitizenRepository {
 
     fun getCitizen(id: Int): Citizen?
 
-    fun getPageOfCitizens(pageNumber: Int, pageSize: Int): List<Citizen>
+    /**
+     * Returns citizens [from, to)  in order of inserting.
+     * Indices are 0-based.
+     */
+    fun getRangeOfCitizens(from: Int, to: Int): List<Citizen>
 
     fun clear()
 
