@@ -10,7 +10,7 @@ import tinkoff.model.CitizenRepository
 import java.sql.ResultSet
 
 
-//@Primary
+@Primary
 @Service
 class JdbcCitizenRepository(private val jdbcTemplate: JdbcTemplate): CitizenRepository {
 
