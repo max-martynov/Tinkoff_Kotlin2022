@@ -3,6 +3,7 @@ package tinkoff.repository
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import tinkoff.model.Citizen
+import tinkoff.model.CitizenRepository
 import java.math.BigInteger
 import javax.persistence.*
 
@@ -10,7 +11,6 @@ import javax.persistence.*
 interface JpaCitizenRepository : JpaRepository<CitizenDB, Int> {
 
     fun findFirstByPersonalIdEquals(personalId: Int): CitizenDB?
-
 
 }
 
