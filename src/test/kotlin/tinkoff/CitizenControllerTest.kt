@@ -112,28 +112,28 @@ class CitizenControllerTest(
 
         @Test
         fun `get first page`() {
-            performGetPage(1, 2)
+            performGetPage(0, 2)
                 .andExpect(status().isOk)
                 .andExpect(content().json(mapper.writeValueAsString(citizens.take(2))))
         }
 
         @Test
         fun `get second page`() {
-            performGetPage(2, 2)
+            performGetPage(1, 2)
                 .andExpect(status().isOk)
                 .andExpect(content().json(mapper.writeValueAsString(citizens.subList(2, 4))))
         }
 
         @Test
         fun `get partial page`() {
-            performGetPage(2, 3)
+            performGetPage(1, 3)
                 .andExpect(status().isOk)
                 .andExpect(content().json(mapper.writeValueAsString(citizens.subList(3, 4))))
         }
 
         @Test
         fun `get non-existent page`() {
-            performGetPage(5, 1)
+            performGetPage(4, 1)
                 .andExpect(status().isOk)
                 .andExpect(content().json(mapper.writeValueAsString(listOf<Citizen>())))
         }
@@ -146,7 +146,7 @@ class CitizenControllerTest(
 
         @Test
         fun `get page with zero size`() {
-            performGetPage(2, 0)
+            performGetPage(1, 0)
                 .andExpect(status().is4xxClientError)
         }
     }
