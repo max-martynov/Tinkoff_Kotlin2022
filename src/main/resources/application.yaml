@@ -1,0 +1,13 @@
+spring:
+  application.name: spring-demo
+  profiles.active: dev
+  datasource:
+    url: jdbc:h2:mem:db
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yaml
+server.port: 9000
+
+fbi.address: http://localhost:9001
