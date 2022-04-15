@@ -6,7 +6,7 @@ import tinkoff.model.Citizen
 import tinkoff.model.CitizenRepository
 
 @Service
-class CitizenVerifier(
+class CitizenService(
     val citizensRepository: CitizenRepository,
     val fbiClient: FBIClient
 ) {
