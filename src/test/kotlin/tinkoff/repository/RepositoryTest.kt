@@ -12,7 +12,13 @@ abstract class RepositoryTest {
     abstract val repository: CitizenRepository
 
     @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class SingleCitizen {
+
+        @BeforeAll
+        fun `clear repository`() {
+            repository.clear()
+        }
 
         @Test
         fun `add and get normal citizen`() {
@@ -35,6 +41,7 @@ abstract class RepositoryTest {
     }
 
     @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class MultipleCitizens {
 
         private val size = 5
@@ -66,5 +73,5 @@ abstract class RepositoryTest {
     }
 
     private fun createRandomCitizen(): Citizen =
-        Citizen((1..1000).random(), (1..3).map { ('a'..'z').random() }.joinToString(""))
+        Citizen((1..1000000).random(), (1..3).map { ('a'..'z').random() }.joinToString(""))
 }
