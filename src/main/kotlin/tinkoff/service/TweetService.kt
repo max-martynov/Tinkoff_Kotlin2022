@@ -12,11 +12,9 @@ class TweetService(
     private val twitterClient: TwitterClient
 ) {
 
-    suspend fun startTrackingTweet(id: Long): ResponseEntity<String> {
+    fun startTrackingTweet(id: Long): ResponseEntity<String> {
         CoroutineScope(Dispatchers.Default).launch {
-            val tweetText = async { twitterClient.getTweetText(id) }
-            val tweetLikesCount = async { twitterClient.getLikesCount(id) }
-            val tweet = Tweet(id, tweetText.await(), tweetLikesCount.await())
+            val tweet = collectTweetInfo(id)
             withContext(Dispatchers.IO) {
                 tweetsRepository.save(tweet)
             }
@@ -24,8 +22,23 @@ class TweetService(
         return ResponseEntity.ok("Tweet ID successfully received!")
     }
 
+    private suspend fun collectTweetInfo(id: Long): Tweet =
+        coroutineScope {
+            val tweetText: Deferred<String> = async {
+                twitterClient.getTweetText(id)
+                    ?: throw IllegalArgumentException("No text found for tweet with id=$id")
+            }
+            val tweetLikesCount: Deferred<Int> = async {
+                twitterClient.getLikesCount(id)
+                    ?: throw IllegalArgumentException("No likes count found for tweet with id=$id")
+            }
+            return@coroutineScope Tweet(id, tweetText.await(), tweetLikesCount.await())
+        }
+
+
     fun getTweetInfo(id: Long): ResponseEntity<Tweet> {
-        return ResponseEntity.ok(tweetsRepository.get(id))
+        val tweet = tweetsRepository.get(id) ?: throw IllegalArgumentException("No tweet with id=$id found")
+        return ResponseEntity.ok(tweet)
     }
 
 }

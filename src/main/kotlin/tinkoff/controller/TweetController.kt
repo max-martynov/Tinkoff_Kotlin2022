@@ -13,12 +13,12 @@ import tinkoff.service.TweetService
 class TweetController(private val tweetService: TweetService) {
 
     @PostMapping("/start-tracking")
-    suspend fun startTrackingTweet(@RequestParam id: Long): ResponseEntity<String> {
+    fun startTrackingTweet(@RequestParam id: Long): ResponseEntity<String> {
         return tweetService.startTrackingTweet(id)
     }
 
     @GetMapping("/get-info/{id}")
-    suspend fun getTweetInfo(@PathVariable id: Long): ResponseEntity<Tweet> {
+    fun getTweetInfo(@PathVariable id: Long): ResponseEntity<Tweet> {
         return tweetService.getTweetInfo(id)
     }
 
