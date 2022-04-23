@@ -19,7 +19,7 @@ class TweetService(
                 tweetsRepository.save(tweet)
             }
         }
-        return ResponseEntity.ok("Tweet ID successfully received!")
+        return ResponseEntity.ok("Tweet id=$id successfully received!")
     }
 
     private suspend fun collectTweetInfo(id: Long): Tweet =
