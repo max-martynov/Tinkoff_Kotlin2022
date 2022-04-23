@@ -14,14 +14,14 @@ class TwitterClient(
     suspend fun getTweetText(id: Long): String? =
         try {
             webClient.get().uri("/tweet/text/$id").retrieve().awaitBody()
-        } catch (e: NoClassDefFoundError) {
+        } catch (e: Exception) {
             null
         }
 
     suspend fun getLikesCount(id: Long): Int? =
         try {
             webClient.get().uri("/tweet/likes/$id").retrieve().awaitBody()
-        } catch (e: NoClassDefFoundError) {
+        } catch (e: Exception) {
             null
         }
 }

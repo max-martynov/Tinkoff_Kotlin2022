@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Maksim Martynov
+      changes:
+        - createTable:
+            tableName: tweets
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: tweet_id
+                  type: long
+                  constraints:
+                    - unique: true
+              - column:
+                  name: text
+                  type: varchar(280)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: likes_count
+                  type: int
+                  constraints:
+                    nullable: false

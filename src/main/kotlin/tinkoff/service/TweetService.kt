@@ -12,7 +12,7 @@ class TweetService(
     private val twitterClient: TwitterClient
 ) {
 
-    fun startTrackingTweet(id: Long): ResponseEntity<String> {
+    suspend fun startTrackingTweet(id: Long): ResponseEntity<String> {
         CoroutineScope(Dispatchers.Default).launch {
             val tweet = collectTweetInfo(id)
             withContext(Dispatchers.IO) {
@@ -36,9 +36,9 @@ class TweetService(
         }
 
 
-    fun getTweetInfo(id: Long): ResponseEntity<Tweet> {
+    suspend fun getTweetInfo(id: Long): ResponseEntity<Tweet> = withContext(Dispatchers.IO) {
         val tweet = tweetsRepository.get(id) ?: throw IllegalArgumentException("No tweet with id=$id found")
-        return ResponseEntity.ok(tweet)
+        return@withContext ResponseEntity.ok(tweet)
     }
 
 }
