@@ -1,14 +1,14 @@
 package tinkoff.repository
 
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Repository
 import tinkoff.model.Tweet
 
-@Service
+@Repository
 interface TweetsRepository {
 
     suspend fun save(tweet: Tweet)
 
     suspend fun get(id: Long): Tweet?
 
-    suspend fun clear()
+    fun clear()
 }

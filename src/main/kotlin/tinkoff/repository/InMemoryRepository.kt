@@ -1,12 +1,12 @@
 package tinkoff.repository
 
 import org.springframework.context.annotation.Primary
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Repository
 import tinkoff.model.Tweet
 import java.util.concurrent.ConcurrentHashMap
 
 //@Primary
-@Service
+@Repository
 class InMemoryRepository : TweetsRepository {
 
     private val tweets = ConcurrentHashMap<Long, Tweet>()
@@ -19,7 +19,7 @@ class InMemoryRepository : TweetsRepository {
         return tweets[id]
     }
 
-    override suspend fun clear() {
+    override fun clear() {
         tweets.clear()
     }
 }

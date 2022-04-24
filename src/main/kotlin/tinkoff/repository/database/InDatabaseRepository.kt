@@ -5,13 +5,15 @@ import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.context.annotation.Primary
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Repository
 import tinkoff.model.Tweet
 import tinkoff.repository.TweetsRepository
+import java.sql.Connection.TRANSACTION_SERIALIZABLE
 
 @Primary
-@Service
+@Repository
 class InDatabaseRepository : TweetsRepository {
     override suspend fun save(tweet: Tweet): Unit = newSuspendedTransaction {
         TweetTable.insert {
@@ -31,7 +33,7 @@ class InDatabaseRepository : TweetsRepository {
         this[TweetTable.likesCount]
     )
 
-    override suspend fun clear(): Unit = newSuspendedTransaction {
+    override  fun clear(): Unit = transaction {
         TweetTable.deleteAll()
     }
 }

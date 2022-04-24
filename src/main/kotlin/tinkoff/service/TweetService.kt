@@ -40,5 +40,4 @@ class TweetService(
         val tweet = tweetsRepository.get(id) ?: throw IllegalArgumentException("No tweet with id=$id found")
         return@withContext ResponseEntity.ok(tweet)
     }
-
 }
