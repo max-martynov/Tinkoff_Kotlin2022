@@ -34,7 +34,6 @@ class TweetControllerTest(
         private const val DEFAULT_LIKES_COUNT = 123
     }
 
-
     @Nested
     inner class TestFunctionality {
 
@@ -44,7 +43,6 @@ class TweetControllerTest(
             coEvery { twitterClient.getLikesCount(any()) } returns DEFAULT_LIKES_COUNT
             tweetsRepository.clear()
         }
-
 
         @Test
         fun `save and get tweet`(): Unit = runBlocking {
