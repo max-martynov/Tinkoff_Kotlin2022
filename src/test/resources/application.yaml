@@ -11,7 +11,7 @@ spring:
     change-log: db/changelog/db.changelog-test.yaml
   activemq:
     queue-name: my_queue
-    cron: */10 * * * * *
+    cron: "*/10 * * * * *"
     broker-url: vm://localhost?broker.persistent=false
 
 server:

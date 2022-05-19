@@ -20,7 +20,7 @@ class ActiveMQTest(@Autowired private val eventsRepository: EventsRepository) {
         sleep(2000L)
         val event = Event(1, EventType.SMS, "hello!", EventStatus.NEW)
         eventsRepository.addEvent(event)
-        sleep(22000L)
+        sleep(15000L)
         assertEquals(EventStatus.DONE, eventsRepository.getEvent(event.id)?.status)
     }
 
@@ -29,7 +29,7 @@ class ActiveMQTest(@Autowired private val eventsRepository: EventsRepository) {
         sleep(2000L)
         val event = Event(2, EventType.SMS, "hi!", EventStatus.ERROR)
         eventsRepository.addEvent(event)
-        sleep(22000L)
+        sleep(15000L)
         assertEquals(EventStatus.ERROR, eventsRepository.getEvent(event.id)?.status)
     }
 
