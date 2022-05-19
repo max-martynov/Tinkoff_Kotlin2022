@@ -11,6 +11,7 @@ spring:
     change-log: db/changelog/db.changelog-master.yaml
   activemq:
     queue-name: my_queue
+    cron: 0 * * * * *
 
 server:
   port: 9000

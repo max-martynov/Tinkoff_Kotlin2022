@@ -23,7 +23,7 @@ class Producer(val eventsRepository: EventsRepository) {
 
     val mapper = ObjectMapper()
 
-    @Scheduled(cron = "0/30 0/1 * 1/1 * ?")
+    @Scheduled(cron = "\${spring.activemq.cron}")
     fun produce() {
         eventsRepository.getEventsWithNewStatus().forEach { event ->
             try {

@@ -17,7 +17,6 @@ class Consumer(val eventsRepository: EventsRepository) {
 
     private val mapper = ObjectMapper().registerKotlinModule()
 
-
     @JmsListener(destination = "\${spring.activemq.queue-name}")
     fun consume(message: String) {
         try {
