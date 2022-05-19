@@ -4,12 +4,11 @@ databaseChangeLog:
       author: Maksim Martynov
       changes:
         - createTable:
-            tableName: Events
+            tableName: EventsRepository
             columns:
               - column:
                   name: id
-                  type: bigint
-                  autoIncrement: true
+                  type: long
                   constraints:
                     primaryKey: true
                     nullable: false

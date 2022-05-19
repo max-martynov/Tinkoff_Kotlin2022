@@ -9,6 +9,8 @@ spring:
     password: password
   liquibase:
     change-log: db/changelog/db.changelog-master.yaml
+  activemq:
+    queue-name: my_queue
 
 server:
   port: 9000
