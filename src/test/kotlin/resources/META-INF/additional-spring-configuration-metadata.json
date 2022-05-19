@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.activemq.queue-name",
+      "type": "java.lang.String",
+      "description": "Description for spring.activemq.queue-name."
+    },
+    {
+      "name": "spring.activemq.cron",
+      "type": "java.lang.String",
+      "description": "Description for spring.activemq.cron."
+    }
+  ] }

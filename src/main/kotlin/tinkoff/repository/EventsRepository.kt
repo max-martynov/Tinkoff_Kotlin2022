@@ -8,4 +8,5 @@ interface EventsRepository {
     fun addEvent(event: Event)
     fun getEventsWithNewStatus(): List<Event>
     fun updateStatus(eventId: Long, newStatus: EventStatus)
+    fun getEvent(id: Long): Event?
 }

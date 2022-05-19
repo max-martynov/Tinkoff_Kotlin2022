@@ -38,4 +38,8 @@ class EventsInDatabase : EventsRepository {
             it[status] = newStatus.name
         }
     }
+
+    override fun getEvent(id: Long): Event? = transaction {
+        EventsTable.select { EventsTable.id eq id }.firstOrNull()?.toEvent()
+    }
 }
