@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-webflux:2.6.7")
     implementation("org.springdoc:springdoc-openapi-ui:1.6.6")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
@@ -26,10 +26,15 @@ dependencies {
     implementation("com.h2database:h2:2.1.210")
     implementation("org.liquibase:liquibase-core:4.9.0")
 
-    implementation("org.springframework.boot:spring-boot-starter-activemq:2.6.6")
+    implementation("com.twitter:twitter-api-java-sdk:1.2.0")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.1")
 
     testImplementation(kotlin("test"))
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
     testImplementation("com.ninja-squad:springmockk:3.1.1")
     testImplementation("io.mockk:mockk:1.12.3")
 }
