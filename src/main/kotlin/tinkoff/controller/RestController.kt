@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import tinkoff.model.Tweet
+import tinkoff.model.TweetResponse
 import tinkoff.service.TrackingService
 
 @RestController
@@ -33,8 +34,8 @@ class RestController(
     }
 
     @GetMapping("/tweet/id/{id}")
-    suspend fun getLikesById(@PathVariable id: String): ResponseEntity<Tweet> {
-        return service.getLikesById(id)
+    suspend fun getLikesById(@PathVariable id: String): ResponseEntity<TweetResponse> {
+        return service.getTweetResponse(id)
     }
 
     @GetMapping("/tweet/all-tracked")

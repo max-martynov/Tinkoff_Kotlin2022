@@ -14,7 +14,7 @@ class InMemoryLikesRepository : LikesRecordRepository {
         map[record.tweetId] = records + record
     }
 
-    override fun getRecords(id: String): List<LikesRecord> {
-        return map.getOrDefault(id, listOf())
+    override fun getRecords(tweetId: String): List<LikesRecord> {
+        return map.getOrDefault(tweetId, listOf())
     }
 }

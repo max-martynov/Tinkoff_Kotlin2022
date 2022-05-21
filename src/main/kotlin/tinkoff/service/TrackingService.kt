@@ -3,10 +3,7 @@ package tinkoff.service
 import kotlinx.coroutines.*
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import tinkoff.model.LikesRecord
-import tinkoff.model.LikesRecordRepository
-import tinkoff.model.Tweet
-import tinkoff.model.TweetRepository
+import tinkoff.model.*
 import tinkoff.service.twitter.TwitterClient
 import java.time.LocalDateTime
 
@@ -18,10 +15,29 @@ class TrackingService(
 ) {
 
     suspend fun trackTweetById(id: String): ResponseEntity<String> {
-        CoroutineScope(Dispatchers.IO).launch {
-            tweetRepository.add(Tweet(id, ))
+        val existedTweet = tweetRepository.getById(id)
+        if (existedTweet != null) {
+            if (existedTweet.status == TweetStatus.TRACKED)
+                throw IllegalArgumentException("Tweet with id=$id is already tracked.")
+            else {
+                tweetRepository.updateStatus(id, TweetStatus.TRACKED)
+                return ResponseEntity.ok("Start tracking tweet with id=$id.")
+            }
         }
         CoroutineScope(Dispatchers.Default).launch {
+            processNewTweet(id)
+        }
+        return ResponseEntity.ok("Request to track tweet with id=$id received.")
+    }
+
+    private suspend fun processNewTweet(id: String) = coroutineScope {
+        launch {
+            val tweet = twitterClient.getTweet(id)
+            if (tweetRepository.isFull())
+                throw IllegalArgumentException("Tracked tweets limit = 15 exceeded.")
+            withContext(Dispatchers.IO) { tweetRepository.add(tweet) }
+        }
+        launch {
             val likesCount = twitterClient.getLikesCount(id)
             withContext(Dispatchers.IO) {
                 likesRecordRepository.addRecord(
@@ -29,7 +45,6 @@ class TrackingService(
                 )
             }
         }
-        return ResponseEntity.ok("Start tracking tweet with id=$id.")
     }
 
     suspend fun trackTweetsByAuthor(authorUsername: String, tweetsCount: Int): ResponseEntity<String> {
@@ -37,11 +52,16 @@ class TrackingService(
     }
 
     suspend fun untrackTweet(id: String): ResponseEntity<String> {
-        TODO()
+        CoroutineScope(Dispatchers.IO).launch {
+            tweetRepository.updateStatus(id, TweetStatus.UNTRACKED)
+        }
+        return ResponseEntity.ok("Request to untrack tweet with id=$id received.")
     }
 
-    suspend fun getLikesById(id: String): ResponseEntity<Tweet> {
-        TODO()
+    suspend fun getTweetResponse(id: String): ResponseEntity<TweetResponse> = withContext(Dispatchers.IO) {
+        val tweet = async { tweetRepository.getById(id) ?: throw IllegalArgumentException("No tweet with id=$id") }
+        val likesRecords = async { likesRecordRepository.getRecords(id) }
+        return@withContext ResponseEntity.ok(TweetResponse(tweet.await(), likesRecords.await()))
     }
 
     suspend fun getLikesForAllTrackedTweets(): ResponseEntity<List<Tweet>> {
