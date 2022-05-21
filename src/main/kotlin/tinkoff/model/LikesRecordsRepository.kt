@@ -1,6 +1,6 @@
 package tinkoff.model
 
-interface LikesRecordRepository {
+interface LikesRecordsRepository {
     fun addRecord(record: LikesRecord)
     fun getRecords(tweetId: String): List<LikesRecord>
 }

@@ -6,18 +6,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.newFixedThreadPoolContext
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 import tinkoff.model.LikesRecord
-import tinkoff.model.LikesRecordRepository
-import tinkoff.model.TweetRepository
+import tinkoff.model.LikesRecordsRepository
+import tinkoff.model.TweetsRepository
 import tinkoff.model.TweetStatus
 import tinkoff.service.twitter.TwitterClient
 import java.time.LocalDateTime
 
 @Component
 class LikesService(
-    private val tweetRepository: TweetRepository,
-    private val likesRecordRepository: LikesRecordRepository,
+    private val tweetsRepository: TweetsRepository,
+    private val likesRecordsRepository: LikesRecordsRepository,
     private val twitterClient: TwitterClient
 ) {
 
@@ -26,11 +25,11 @@ class LikesService(
 
     @Scheduled(cron = "0 * * * * *")
     fun updateLikesRecords() = CoroutineScope(context).launch {
-        tweetRepository.getAll().filter { it.status == TweetStatus.TRACKED }.forEach { tweet ->
+        tweetsRepository.getAll().filter { it.status == TweetStatus.TRACKED }.forEach { tweet ->
             launch {
                 println(tweet.id)
                 val likesCount = twitterClient.getLikesCount(tweet.id)
-                likesRecordRepository.addRecord(
+                likesRecordsRepository.addRecord(
                     LikesRecord(
                         tweet.id,
                         likesCount,

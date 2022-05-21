@@ -1,6 +1,5 @@
 package tinkoff.model
 
-import java.time.LocalDateTime
 
 data class Tweet(
     val id: String,

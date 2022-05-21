@@ -1,6 +1,6 @@
 package tinkoff.model
 
-interface TweetRepository {
+interface TweetsRepository {
     fun add(tweet: Tweet)
     fun getById(id: String): Tweet?
     fun getAll(): Set<Tweet>
