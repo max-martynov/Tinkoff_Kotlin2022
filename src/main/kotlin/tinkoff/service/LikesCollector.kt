@@ -23,11 +23,10 @@ class LikesCollector(
     @OptIn(ObsoleteCoroutinesApi::class)
     private val context = newFixedThreadPoolContext(15, "for likes update")
 
-    @Scheduled(cron = "0 * * * * *")
+    @Scheduled(cron = "\${spring.cron}")
     fun updateLikesRecords() = CoroutineScope(context).launch {
         tweetsRepository.getAll().filter { it.status == TweetStatus.TRACKED }.forEach { tweet ->
             launch {
-                println(tweet.id)
                 val likesCount = twitterClient.getLikesCount(tweet.id)
                 likesRecordsRepository.addRecord(
                     LikesRecord(

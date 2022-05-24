@@ -40,4 +40,8 @@ class DBTweetsRepository : TweetsRepository {
             it[status] = newStatus.name
         }
     }
+
+    override fun clear(): Unit = transaction {
+        TweetsTable.deleteAll()
+    }
 }

@@ -10,7 +10,6 @@ spring:
   liquibase:
     change-log: db/changelog/db.changelog-master.yaml
   max-tracked-tweets: 5
-  cron: "0 * * * * *"
 
 server:
   port: 9000

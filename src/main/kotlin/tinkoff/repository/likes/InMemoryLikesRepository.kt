@@ -17,4 +17,8 @@ class InMemoryLikesRepository : LikesRecordsRepository {
     override fun getRecords(tweetId: String): List<LikesRecord> {
         return map.getOrDefault(tweetId, listOf())
     }
+
+    override fun clear() {
+        map.clear()
+    }
 }

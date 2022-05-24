@@ -1,6 +1,7 @@
 package tinkoff.repository.likes.db
 
 import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -29,4 +30,8 @@ class DBLikesRecordsRepository : LikesRecordsRepository {
         this[LikesRecordsTable.likesCount],
         this[LikesRecordsTable.relevantAt]
     )
+
+    override fun clear(): Unit = transaction {
+        LikesRecordsTable.deleteAll()
+    }
 }

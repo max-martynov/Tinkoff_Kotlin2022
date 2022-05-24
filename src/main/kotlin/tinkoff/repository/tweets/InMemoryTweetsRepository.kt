@@ -28,4 +28,8 @@ class InMemoryTweetsRepository : TweetsRepository {
         tweets[id] = updated
     }
 
+    override fun clear() {
+        tweets.clear()
+    }
+
 }
