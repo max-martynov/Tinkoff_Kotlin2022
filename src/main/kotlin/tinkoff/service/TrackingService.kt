@@ -1,12 +1,14 @@
 package tinkoff.service
 
 import kotlinx.coroutines.*
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import tinkoff.chart.ChartBuilder
 import tinkoff.model.*
 import tinkoff.service.twitter.TwitterClient
 import java.time.LocalDateTime
+import kotlin.properties.Delegates
 
 @Service
 class TrackingService(
@@ -14,6 +16,9 @@ class TrackingService(
     private val likesRecordsRepository: LikesRecordsRepository,
     private val twitterClient: TwitterClient
 ) {
+
+    @Value("\${spring.max-tracked-tweets}")
+    private var maxNumberTrackedTweets: Int = 5
 
     private val chartBuilder = ChartBuilder()
 
@@ -36,8 +41,9 @@ class TrackingService(
     private suspend fun processNewTweet(id: String) = coroutineScope {
         launch {
             val tweet = twitterClient.getTweet(id)
-            if (tweetsRepository.isFull())
-                throw IllegalArgumentException("Tracked tweets limit = 15 exceeded.")
+            if (tweetsRepository.getAll().size >= maxNumberTrackedTweets)
+                throw IllegalArgumentException("Tracked tweets limit = $maxNumberTrackedTweets exceeded. " +
+                        "Please untrack some tweet and try again.")
             withContext(Dispatchers.IO) { tweetsRepository.add(tweet) }
         }
         launch {
