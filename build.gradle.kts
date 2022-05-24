@@ -29,6 +29,8 @@ dependencies {
 
     implementation("com.twitter:twitter-api-java-sdk:1.2.0")
 
+    implementation("space.kscience:plotlykt-core:0.5.0")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.6.1")
 
@@ -41,7 +43,7 @@ dependencies {
 }
 
 tasks.withType<KotlinCompile>() {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions.jvmTarget = "11"
 }
 
 tasks.withType<Test>() {

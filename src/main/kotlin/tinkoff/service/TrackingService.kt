@@ -3,6 +3,7 @@ package tinkoff.service
 import kotlinx.coroutines.*
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import tinkoff.chart.ChartBuilder
 import tinkoff.model.*
 import tinkoff.service.twitter.TwitterClient
 import java.time.LocalDateTime
@@ -13,6 +14,8 @@ class TrackingService(
     private val likesRecordsRepository: LikesRecordsRepository,
     private val twitterClient: TwitterClient
 ) {
+
+    private val chartBuilder = ChartBuilder()
 
     suspend fun trackTweetById(id: String): ResponseEntity<String> {
         val existedTweet = tweetsRepository.getById(id)
@@ -47,10 +50,6 @@ class TrackingService(
         }
     }
 
-    suspend fun trackTweetsByAuthor(authorUsername: String, tweetsCount: Int): ResponseEntity<String> {
-        TODO()
-    }
-
     suspend fun untrackTweet(id: String): ResponseEntity<String> {
         CoroutineScope(Dispatchers.IO).launch {
             tweetsRepository.updateStatus(id, TweetStatus.UNTRACKED)
@@ -58,13 +57,15 @@ class TrackingService(
         return ResponseEntity.ok("Request to untrack tweet with id=$id received.")
     }
 
-    suspend fun getTweetResponse(id: String): ResponseEntity<TweetResponse> = withContext(Dispatchers.IO) {
-        val tweet = async { tweetsRepository.getById(id) ?: throw IllegalArgumentException("No tweet with id=$id") }
-        val likesRecords = async { likesRecordsRepository.getRecords(id) }
+    suspend fun getLikesRecordsList(tweetId: String): ResponseEntity<TweetResponse> = withContext(Dispatchers.IO) {
+        val tweet = async { tweetsRepository.getById(tweetId) ?: throw IllegalArgumentException("No tweet with id=$tweetId") }
+        val likesRecords = async { likesRecordsRepository.getRecords(tweetId) }
         return@withContext ResponseEntity.ok(TweetResponse(tweet.await(), likesRecords.await()))
     }
 
-    suspend fun getLikesForAllTrackedTweets(): ResponseEntity<List<Tweet>> {
-        TODO()
+    suspend fun getLikesRecordsChart(tweetId: String): ResponseEntity<String> = withContext(Dispatchers.IO) {
+        val likesRecords = async { likesRecordsRepository.getRecords(tweetId) }
+        return@withContext ResponseEntity.ok(chartBuilder.build(tweetId, likesRecords.await()))
     }
+
 }

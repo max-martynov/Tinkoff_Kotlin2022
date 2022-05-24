@@ -14,7 +14,7 @@ import tinkoff.service.twitter.TwitterClient
 import java.time.LocalDateTime
 
 @Component
-class LikesService(
+class LikesCollector(
     private val tweetsRepository: TweetsRepository,
     private val likesRecordsRepository: LikesRecordsRepository,
     private val twitterClient: TwitterClient
