@@ -1,15 +1,16 @@
 spring:
   application:
     name: spring-demo
-  profiles.active: dev
+  profiles.active: test
   datasource:
     url: jdbc:h2:mem:db
     driver-class-name: org.h2.Driver
     username: sa
     password: password
   liquibase:
-    change-log: db/changelog/db.changelog-master.yaml
+    change-log: db/changelog/db.changelog-test.yaml
   max-tracked-tweets: 5
+  cron: "* * * * * *"
 
 server:
   port: 9000

@@ -4,5 +4,10 @@
       "name": "spring.max-tracked-tweets",
       "type": "java.lang.Integer",
       "description": "Description for spring.max-tracked-tweets."
-  }
+  },
+    {
+      "name": "spring.cron",
+      "type": "java.lang.String",
+      "description": "Description for spring.cron."
+    }
 ] }
