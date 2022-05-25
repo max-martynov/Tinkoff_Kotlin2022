@@ -15,12 +15,12 @@ class RestController(
     val service: TrackingService
 ) {
 
-    @PostMapping("/track/tweet/id/{id}")
+    @PostMapping("/track/tweet/{id}")
     suspend fun trackTweetById(@PathVariable id: String): ResponseEntity<String> {
         return service.trackTweetById(id)
     }
 
-    @PostMapping("/untrack-tweet/id/{id}")
+    @PostMapping("/untrack/tweet/{id}")
     suspend fun untrackTweet(@PathVariable id: String): ResponseEntity<String> {
         return service.untrackTweet(id)
     }
