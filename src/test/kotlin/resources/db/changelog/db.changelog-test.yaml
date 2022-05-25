@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Maksim Martynov
+      changes:
+        - createTable:
+            tableName: Tweets
+            columns:
+              - column:
+                  name: id
+                  type: varchar(50)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(280)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_username
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: LikesRecords
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: tweet_id
+                  type: varchar(50)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: likes_count
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: relevant_at
+                  type: datetime
+                  constraints:
+                    nullable: false
