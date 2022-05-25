@@ -9,6 +9,7 @@ import org.springframework.test.context.event.annotation.AfterTestClass
 import tinkoff.model.Tweet
 import tinkoff.model.TweetStatus
 import tinkoff.model.TweetsRepository
+import tinkoff.util.Helper
 import kotlin.test.assertEquals
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -27,7 +28,7 @@ abstract class TweetsRepositoryTest() {
 
         @Test
         fun `add single tweet`() {
-            val tweet = Tweet("1", "2", "3", TweetStatus.TRACKED)
+            val tweet = Helper.createRandomTweet()
             tweetsRepository.add(tweet)
             assertEquals(tweet, tweetsRepository.getById(tweet.id))
         }
@@ -35,7 +36,7 @@ abstract class TweetsRepositoryTest() {
         @Test
         fun `add multiple tweets`() {
             repeat(10) {
-                val tweet = Tweet("$it", "$it", "$it", TweetStatus.UNTRACKED)
+                val tweet = Helper.createRandomTweet()
                 tweetsRepository.add(tweet)
                 assertEquals(tweet, tweetsRepository.getById(tweet.id))
             }
@@ -48,7 +49,7 @@ abstract class TweetsRepositoryTest() {
         @Test
         fun `get all tweets`() {
             val tweets = List(5) {
-                val tweet = Tweet("$it", "$it", "$it", TweetStatus.UNTRACKED)
+                val tweet = Helper.createRandomTweet()
                 tweetsRepository.add(tweet)
                 tweet
             }
@@ -61,7 +62,7 @@ abstract class TweetsRepositoryTest() {
 
         @Test
         fun `TRACKED to UNTRACKED and vice versa`() {
-            val tweet = Tweet("1", "2", "3", TweetStatus.TRACKED)
+            val tweet = Helper.createRandomTweet(status = TweetStatus.TRACKED)
             tweetsRepository.add(tweet)
             assertEquals(tweet, tweetsRepository.getById(tweet.id))
             tweetsRepository.updateStatus(tweet.id, TweetStatus.UNTRACKED)
