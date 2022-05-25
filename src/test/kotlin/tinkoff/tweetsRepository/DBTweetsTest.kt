@@ -5,4 +5,4 @@ import org.springframework.boot.test.context.SpringBootTest
 import tinkoff.repository.tweets.db.DBTweetsRepository
 
 @SpringBootTest
-class DBTest(@Autowired override val tweetsRepository: DBTweetsRepository) : TweetsRepositoryTest()
+class DBTweetsTest(@Autowired override val tweetsRepository: DBTweetsRepository) : TweetsRepositoryTest()

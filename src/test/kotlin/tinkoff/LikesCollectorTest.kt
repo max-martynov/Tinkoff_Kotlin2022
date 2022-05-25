@@ -19,7 +19,6 @@ import java.lang.Thread.sleep
 import kotlin.test.assertEquals
 
 @SpringBootTest
-@EnableScheduling
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class LikesCollectorTest(
     @Autowired private val tweetsRepository: TweetsRepository,
@@ -34,6 +33,10 @@ class LikesCollectorTest(
     fun `clear repositories`() {
         tweetsRepository.clear()
         likesRecordsRepository.clear()
+    }
+
+    @BeforeEach
+    fun `set up twitter client`() {
         coEvery { twitterClient.getLikesCount(any()) } returns 10
     }
 

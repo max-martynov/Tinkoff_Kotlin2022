@@ -6,7 +6,7 @@ import tinkoff.model.TweetsRepository
 import tinkoff.repository.likes.db.DBLikesRecordsRepository
 
 @SpringBootTest
-class DBTest(
+class DBLikesTest(
     @Autowired override val likesRecordsRepository: DBLikesRecordsRepository,
     @Autowired val tweetsRepository: TweetsRepository
 ) : LikesRecordsRepositoryTest(tweetsRepository)
